@@ -1,0 +1,123 @@
+/**
+ * Given a Boggle board and a dictionary, returns a list of available words in
+ * the dictionary present inside of the Boggle board.
+ * @param {string[][]} grid - The Boggle game board.
+ * @param {string[]} dictionary - The list of available words.
+ * @returns {string[]} solutions - Possible solutions to the Boggle board.
+ */
+var solution =[];
+var currentLetter;
+//let previousPosition=[];
+
+ exports.findAllSolutions = function(grid, dictionary) {
+  let solutions = [];
+  let currentLetter;
+  let letterCounter = 0;
+  let word = "";
+    if(validTiles()){
+    if(grid.length>0){
+      for( let row = 0; row< grid.length;row++ ){
+        for(let col = 0; col<grid.length;col++)
+          wordSearch(row, col, word)
+        }
+      }
+    }
+    return solution;
+ }
+
+
+
+  function wordSearch(row, col,currentWord){
+    check = false;
+    //Assigns current letter in grid.
+    if(row>=0&&col>=0 &&row<grid.length&&col<grid.length)
+      currentLetter = grid[row][col];
+    //Add current letter to word
+    currentWord+= currentLetter;
+    //Checks if letter is in part of the word
+    checkWord:
+      for(word in dictionary){
+        if(dictionary[word].includes(currentWord.toLowerCase())){
+          check = true; 
+        }
+
+          //If current word equals word in dictionary and long than 2 letters
+        if(currentWord.toLowerCase() == dictionary[word]&&currentWord.length>=3){ 
+          solution.push(currentWord.toLowerCase());
+          check = true;
+          break checkWord;
+          return;
+        }
+    }    
+    //if current word isnt on the right track, go back in positions
+    if(check==false)
+    return;
+
+     //check all positions around current letter
+      if(row>=0 && row<grid.length&& col>= 0 && col<grid.length){
+          wordSearch(row,col+1, currentWord);
+          wordSearch(row-1,col,currentWord);
+          wordSearch(row+1,col,currentWord);
+          wordSearch(row,col-1,currentWord);
+          wordSearch(row+1,col+1, currentWord);
+          wordSearch(row-1,col-1,currentWord);
+          wordSearch(row-1,col+1,currentWord);
+          wordSearch(row+1,col-1, currentWord);
+     
+        }
+        else
+          return;
+        return;
+
+
+      }
+      //Checks if grid doesnt have Q or S
+      function validTiles(){
+        for(i=0; i<grid.length; i++){
+          if(grid[i].includes('Q')||grid[i].includes('S'))
+            return false;
+        }
+        return true;
+      }
+
+      /*function previousLetter(){
+        let count=0;
+        for(position in previousPosition)
+          previousPosition.forEach(element => {
+            if (element == previousPosition[position]) {
+              count += 1;
+              console.log(element+ "  "+ previousPosition[1]+ "  "+ count);
+              if(count>1){
+               solution.splice(position); 
+          
+            }
+
+          }
+        
+
+        })
+        return;
+      }*/
+     
+
+var grid = [['T', 'W', 'Y', 'R'],
+              ['E', 'N', 'P', 'H'],
+              ['G', 'Z', 'Qu', 'R'],
+              ['St', 'N', 'T', 'A']];
+var dictionary = ['art', 'ego', 'gent', 'get', 'net', 'new', 'newt', 'prat',
+                    'pry', 'qua', 'quart', 'quartz', 'rat', 'tar', 'tarp',
+                    'ten', 'went', 'wet', 'arty', 'egg', 'not', 'quar'];
+
+console.log(exports.findAllSolutions(grid, dictionary));
+/*testCases();
+ function testCases(){
+        grid=[];
+        console.log(exports.findAllSolutions(grid, dictionary));
+        grid=[['T', 'W', 'Y'],
+              ['E', 'N', 'P'],
+              ['G', 'Z', 'Q'],
+              ];
+              
+
+      }*/
+   
